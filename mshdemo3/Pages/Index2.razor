@@ -1,0 +1,209 @@
+﻿@page "/"
+@inject AvatarService AvatarService
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@using Microsoft.AspNetCore.Components.Forms
+
+<Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
+<h3>Upload Avatar Image</h3>
+
+<InputFile accept=".jpg,.jpeg,.png,.gif,.mp4" OnChange="@(async e => await HandleFileSelected(e))" />
+
+
+@if(isButtonShow)
+{
+    <div class="action-btn">
+        <button type="button" class="btn btn-primary btn-lg" @onclick="Download">
+            <span>
+                Download
+                <img src="/down-load.svg" />
+            </span>
+            
+        </button>
+        <button type="button" class="btn btn-secondary btn-lg" @onclick="GetMeasurement">
+            <span>
+                Measurement
+                <img src="/rulers.svg" />
+            </span>
+        </button>
+    </div>
+}
+
+@if (isLoaderActive)
+{
+    <div class="loader"></div>
+}
+
+@if (showMeasurementData)
+{
+    <div class="card cus-card">
+        <h5 class="card-header">Measurement</h5>
+        <div class="card-body">
+            <div class="measurement-data">
+                <div class="shape">
+                    <h4>Shape <img src="/exclamation-circle.svg" /></h4>
+                    <p>@BodyShapevalue</p>
+                </div>
+
+                <div class="units">
+                    <h4>Units <img src="/eye.svg" /></h4>
+                    <p>@unitsvalue</p>
+                </div>
+
+                <div class="height">
+                    <h4>Height (cm) <img src="/eye.svg" /></h4>
+                    <p class="measurement-data-inner">@Height</p>
+                </div>
+
+                <div class="weight">
+                    <h4>Weight (kg) <img src="/eye.svg" /></h4>
+                    <p class="measurement-data-inner">@Weight</p>
+                </div>
+
+                <div class="chest">
+                    <h4>Chest (cm) <img src="/eye.svg" /></h4>
+                    <p class="measurement-data-inner">@chest</p>
+                </div>
+
+                <div class="waist">
+                    <h4>Waist (cm) <img src="/eye.svg" /></h4>
+                    <p class="measurement-data-inner">@waist</p>
+                </div>
+
+                <div class="hips">
+                    <h4>Hips (cm) <img src="/eye.svg" /></h4>
+                    <p class="measurement-data-inner">@hips</p>
+                </div>
+
+                <div class="inseam">
+                    <h4>Inseam (cm) <img src="/eye.svg" /></h4>
+                    <p class="measurement-data-inner">@inseam</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private string? BodyShapevalue { get; set; }
+    private string? unitsvalue { get; set; }
+    public double inseam{ get; set; }
+    public double hips { get; set; }
+    public double waist { get; set; }
+    public double chest { get; set; }
+    public double Weight { get; set; }
+    public double Height { get; set; }
+    private string _token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuSnVpYzVwbXk1T1hGSjVmY1RIQTdUNVktRHZVbVVOR2xxVHBqS0hDVnU4In0.eyJleHAiOjE3MTk2MTEyNjcsImlhdCI6MTcxOTU3NTI2OCwiYXV0aF90aW1lIjoxNzE5NTc1MjY3LCJqdGkiOiI3MDc0YzgxOS02ZTUzLTRmZmItOTUxMS1lNTJkYTMyYWRhZjkiLCJpc3MiOiJodHRwczovL2F1dGgubWVzaGNhcGFkZS5jb20vcmVhbG1zL21lc2hjYXBhZGUtbWUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMWY4MmE2ODAtZGFhMi00NzJhLTkxZDctOWE2NzdlY2NhZTA0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWVzaGNhcGFkZS1tZSIsIm5vbmNlIjoiZTZlNzBjZTYtMjQ3Zi00YjMyLWI0MGItZGJiODBlYWJhMTJlIiwic2Vzc2lvbl9zdGF0ZSI6ImRmZGZhZjgwLTI4N2UtNDkxMi1iMWVjLTE4MzFlZDcxM2QzNSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9tZXNoY2FwYWRlLmNvbSIsImh0dHBzOi8vbWUubWVzaGNhcGFkZS5jb20iLCJodHRwczovL21lc2hjYXBhZGUubWUiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1nY21jIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiZGZkZmFmODAtMjg3ZS00OTEyLWIxZWMtMTgzMWVkNzEzZDM1IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoaXRvbWl0ZXN0ZGVtb0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiVGVzdCIsImZhbWlseV9uYW1lIjoiVXNlciIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLVm84dlJicnpaTkNZTmlWT3Q5Yk9TYXFvREZPMFRCcG53UWtGZzh3WHRIVzJCZmc9czk2LWMiLCJlbWFpbCI6ImhpdG9taXRlc3RkZW1vQGdtYWlsLmNvbSJ9.N2zXze7MVAkX1PPdszZ7H9cU1dXxb7VcvUA8dRHUwNTLBotZlyIQZKXVZ4k-jz7rO8zjx2xAtf-wIs3yYtpdqoxbw1yF3_4aRE4NLjqZIy6VFq0_I0IlQRLCZYC39jEH8M_-trxiuRFzGrAYJZMMOAR-anmZypMGcbZqsH6NRiRdUBTsPj-yiISjFKNhuc6qrH57ykdSKrYKcxja4i-kptr__zZA9uQ1FuXFErpvcC9-FItSAI8Bb6GJKRT4Z7jHGhpbNZWTS7h-kvuACMln8n37toT6k-TeYD0AebpWcAbQDBPwg3q_n8Rn8qTqFooBESxnVrdatVZ_48lqLdZoHw";
+    private string? _avatarId;
+    private string? _s3Url;
+    private bool uploadimages3;
+    public AvatarMeasurements? responseAvatar;
+    public AvatarExport? responseAvatarExport;
+    private bool isLoaderActive = false;
+    private bool isButtonShow = false;
+    private bool showMeasurementData = false;
+    List<ToastMessage> messages = new List<ToastMessage>();
+
+    private void ShowMessage(ToastType toastType, string message, string title) => messages.Add(CreateToastMessage(toastType,message,title));
+
+    private ToastMessage CreateToastMessage(ToastType toastType, string message, string title)
+    => new ToastMessage
+    {
+            Type = toastType,
+            Title = title,
+            Message = message,
+    };
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        isLoaderActive = true;
+        isButtonShow = false;
+        showMeasurementData = false;
+        if (e.FileCount > 0)
+        {
+            var file = e.File;
+            using var memoryStream = new MemoryStream();
+            await file.OpenReadStream().CopyToAsync(memoryStream);
+            memoryStream.Position = 0; // Reset stream position before upload
+            try
+            {
+                _avatarId = await AvatarService.InitiateAvatarCreation(_token);
+                _s3Url = await AvatarService.RequestImageUploads(_avatarId, _token);
+                uploadimages3 = await AvatarService.UploadImageToS3(_s3Url, memoryStream);
+                await AvatarService.StartFittingProcess(_avatarId, _token);
+                if (uploadimages3)
+                {
+                    isLoaderActive = false;
+                    isButtonShow = true;
+                    ShowMessage(ToastType.Success, "Avatar Created succesfully !", "Avatar created");
+                }
+                else
+                {
+                    ShowMessage(ToastType.Danger, "File upload to s3 bucket for avatar creation Faield !", "File Process For Avatar");
+                }
+            }
+            catch(Exception ex)
+            {
+                isLoaderActive = false;
+                ShowMessage(ToastType.Danger, ex.Message.ToString(), "Faield");
+            }
+        }
+    }
+
+    private double DoubleFormatter(double value)
+    {
+        var result =  Math.Round(value, 2);
+        return result;
+    }
+
+    public async Task<AvatarMeasurements> AvatarMeasurements(string avatarId, string token)
+    {
+        responseAvatar = await AvatarService.RetrieveAvatarMeasurements(avatarId, token);
+        var avatarStatus = responseAvatar.data.attributes.state;
+        return responseAvatar;
+    }
+
+    private async Task GetMeasurement()
+    {
+        isLoaderActive = true;
+        showMeasurementData = false;
+        responseAvatar = await AvatarMeasurements(_avatarId, _token);
+        if (responseAvatar.data.attributes.state == "READY")
+        {
+            ShowMessage(ToastType.Success, "Measurements !", "Avatar measrements");
+            Weight = DoubleFormatter(responseAvatar.data.attributes.metadata.bodyShape.mesh_measurements.Weight);
+            Height = DoubleFormatter(responseAvatar.data.attributes.metadata.bodyShape.mesh_measurements.Height);
+            BodyShapevalue = responseAvatar.data.attributes.metadata.bodyShape.gender;
+            unitsvalue = "METRIC";
+            isLoaderActive = false;
+            showMeasurementData = true;
+        }
+        else
+        {
+            isLoaderActive = false;
+            ShowMessage(ToastType.Info, "Avatar is not in ready state. Please wait for sometime.!", "Status");
+        }
+
+    }
+
+    private async Task Download()
+    {
+        isLoaderActive = true;
+        responseAvatar = await AvatarMeasurements(_avatarId, _token);
+        if (responseAvatar.data.attributes.state == "READY")
+        {
+            responseAvatarExport = await AvatarService.ExportAvatar(_avatarId, _token);
+            if(responseAvatarExport.data.attributes.state == "READY")
+            {
+                  
+            }
+            var linksurls = responseAvatarExport.data.links.self;
+            isLoaderActive = false;
+        }
+        else
+        {
+            isLoaderActive = false;
+            ShowMessage(ToastType.Info, "Avatar is not in ready state. Please wait for sometime for download.!", "Status");
+        }
+    }
+}
