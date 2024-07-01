@@ -1,17 +1,21 @@
 ﻿@page "/"
 @inject AvatarService AvatarService
+@inject AvatarVideoService AvatarVideoService
+@inject CommonAvtarService CommonAvtarService
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject IJSRuntime JSRuntime
 @using Microsoft.AspNetCore.Components.Forms
 
 <Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
-<h3>Upload Avatar Image</h3>
+<div class="token-inner">
+    <h3>Enter Token</h3>
+    <input type="text" @bind-value="_token" />
+</div>
+<InputFile accept=".jpg,.jpeg,.png,.gif,.mp4,.avi,.mov,.mkv,.obj" OnChange="@(async e => await HandleFileSelected(e))" />
 
-<InputFile accept=".jpg,.jpeg,.png,.gif,.mp4" OnChange="@(async e => await HandleFileSelected(e))" />
 
-
-@if(isButtonShow)
+@if (isButtonShow)
 {
     <div class="action-btn">
         <button type="button" class="btn btn-primary btn-lg" @onclick="Download">
@@ -19,7 +23,7 @@
                 Download
                 <img src="/down-load.svg" />
             </span>
-            
+
         </button>
         <button type="button" class="btn btn-secondary btn-lg" @onclick="GetMeasurement">
             <span>
@@ -84,19 +88,20 @@
         </div>
     </div>
 }
+
 <canvas id="threeCanvas" style="width: 100%; height: 100%;"></canvas>
 
 @code {
     private string? BodyShapevalue { get; set; }
     private string? unitsvalue { get; set; }
-    public double inseam{ get; set; }
+    public double inseam { get; set; }
     public double hips { get; set; }
     public double waist { get; set; }
     public double chest { get; set; }
     public double Weight { get; set; }
     public double Height { get; set; }
-    private string _token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuSnVpYzVwbXk1T1hGSjVmY1RIQTdUNVktRHZVbVVOR2xxVHBqS0hDVnU4In0.eyJleHAiOjE3MTk4NDUyOTYsImlhdCI6MTcxOTgwOTI5NywiYXV0aF90aW1lIjoxNzE5ODA5Mjk2LCJqdGkiOiI0ZDUyMDRjNi1hZjgyLTQ1NTYtYWM5Ny0wZjM3MzBkMDgxNzMiLCJpc3MiOiJodHRwczovL2F1dGgubWVzaGNhcGFkZS5jb20vcmVhbG1zL21lc2hjYXBhZGUtbWUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMWY4MmE2ODAtZGFhMi00NzJhLTkxZDctOWE2NzdlY2NhZTA0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWVzaGNhcGFkZS1tZSIsIm5vbmNlIjoiODFiNjJkYzctMjIxZi00ZjM1LTljNDItMDcyZTk0NzFkZDhjIiwic2Vzc2lvbl9zdGF0ZSI6ImZjZmVkMTc3LTY0ODMtNGRiYi1hZTZlLTllZjJiZGE1MmM0ZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9tZXNoY2FwYWRlLmNvbSIsImh0dHBzOi8vbWUubWVzaGNhcGFkZS5jb20iLCJodHRwczovL21lc2hjYXBhZGUubWUiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1nY21jIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiZmNmZWQxNzctNjQ4My00ZGJiLWFlNmUtOWVmMmJkYTUyYzRlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoaXRvbWl0ZXN0ZGVtb0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiVGVzdCIsImZhbWlseV9uYW1lIjoiVXNlciIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLVm84dlJicnpaTkNZTmlWT3Q5Yk9TYXFvREZPMFRCcG53UWtGZzh3WHRIVzJCZmc9czk2LWMiLCJlbWFpbCI6ImhpdG9taXRlc3RkZW1vQGdtYWlsLmNvbSJ9.WU3VUQTidtepflYSKywyKj49kA1cc-urIUdDKMQt6nAKiSaticso8ztTWgKxyj3SSXEB9g-_choYC4UHo-GBcHmw3Ea61Z0WI9CB4L5J9PNNYWEg6TqXoqBLYlUmDYBiN_8FDpNU8PN30E2Zoj7FRAutzkyHgdb2srXM2bNNDPYG_VgMRW9DdWlKok7ZV2s8HlJ8zXmWEVM8L3C-qGiw0ukCEbLlaYDMLc5aCO6D8GvnArf0yHSEsC8hNC3QUWz1PwCztqEkVGaM3HKT4J6TzFepYHa1BhfKLiRO37MRJTnbCBGn2aLkW6UREsa2QPbD2FJI8QwJHZeM6V4b1jCA1Q ";
-    private string? _avatarId;
+    private string? _token { get; set; }
+    private string? assetId;
     private string? _s3Url;
     private bool uploadimages3;
     public AvatarMeasurements? responseAvatar;
@@ -105,62 +110,157 @@
     private bool isButtonShow = false;
     private bool showMeasurementData = false;
     List<ToastMessage> messages = new List<ToastMessage>();
+    private string extension;
+    private bool uploadvideos3;
 
-    private void ShowMessage(ToastType toastType, string message, string title) => messages.Add(CreateToastMessage(toastType,message,title));
+    private void ShowMessage(ToastType toastType, string message, string title) => messages.Add(CreateToastMessage(toastType, message, title));
 
     private ToastMessage CreateToastMessage(ToastType toastType, string message, string title)
     => new ToastMessage
-    {
+        {
             Type = toastType,
             Title = title,
             Message = message,
-    };
+        };
 
     private async Task HandleFileSelected(InputFileChangeEventArgs e)
     {
-        isLoaderActive = true;
-        isButtonShow = false;
-        showMeasurementData = false;
-        if (e.FileCount > 0)
+        if(string.IsNullOrEmpty(_token))
         {
+            ShowMessage(ToastType.Danger, "Enter valid token !", "UnAutorize");
+        }
+        else
+        {
+            isLoaderActive = true;
+            isButtonShow = false;
+            showMeasurementData = false;
             var file = e.File;
-            using var memoryStream = new MemoryStream();
-            await file.OpenReadStream().CopyToAsync(memoryStream);
-            memoryStream.Position = 0; // Reset stream position before upload
-            try
+            extension = Path.GetExtension(file.Name);
+
+            if (extension == ".jpg" || extension == ".jpeg" || extension == ".png" || extension == ".gif")
             {
-                _avatarId = await AvatarService.InitiateAvatarCreation(_token);
-                _s3Url = await AvatarService.RequestImageUploads(_avatarId, _token);
-                uploadimages3 = await AvatarService.UploadImageToS3(_s3Url, memoryStream);
-                await AvatarService.StartFittingProcess(_avatarId, _token);
-                if (uploadimages3)
+                if (e.FileCount > 0)
                 {
-                    isLoaderActive = false;
-                    isButtonShow = true;
-                    ShowMessage(ToastType.Success, "Avatar Created succesfully !", "Avatar created");
-                }
-                else
-                {
-                    ShowMessage(ToastType.Danger, "File upload to s3 bucket for avatar creation Faield !", "File Process For Avatar");
+                    using var memoryStream = new MemoryStream();
+                    await file.OpenReadStream().CopyToAsync(memoryStream);
+                    memoryStream.Position = 0; // Reset stream position before upload
+                    try
+                    {
+                        assetId = await AvatarService.InitiateAvatarCreation(_token);
+                        _s3Url = await AvatarService.RequestImageUploads(assetId, _token);
+                        uploadimages3 = await AvatarService.UploadImageToS3(_s3Url, memoryStream);
+                        await AvatarService.StartFittingProcess(assetId, _token);
+                        if (uploadimages3)
+                        {
+                            isLoaderActive = false;
+                            isButtonShow = true;
+                            ShowMessage(ToastType.Success, "Avatar Created succesfully !", "Avatar created");
+                        }
+                        else
+                        {
+                            ShowMessage(ToastType.Danger, "File upload to s3 bucket for avatar creation Faield !", "File Process For Avatar");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        isLoaderActive = false;
+                        ShowMessage(ToastType.Danger, ex.Message.ToString(), "Faield");
+                    }
                 }
             }
-            catch(Exception ex)
+            else if (extension == ".mp4" || extension == ".avi" || extension == ".mov" || extension == ".mkv")
             {
-                isLoaderActive = false;
-                ShowMessage(ToastType.Danger, ex.Message.ToString(), "Faield");
+                if (e.FileCount > 0)
+                {
+                    const long maxAllowedSize = 20 * 1024 * 1024; // 20 MB
+                    if (file.Size > maxAllowedSize)
+                    {
+                        // Handle file too large scenario
+                        ShowMessage(ToastType.Danger, "File too large to upload.!", "Status");
+                        return;
+                    }
+
+                    assetId = await AvatarVideoService.InitiateAvatarCreation(_token);
+
+                    // Check if the result is a status code
+                    if (assetId == "BadRequest")
+                    {
+                        ShowMessage(ToastType.Danger, "Please contact the administrator. It might be a token issue or token credits might be completed.!", "Error: Bad Request");
+                        return;
+                    }
+                    else if (assetId == "Unauthorized")
+                    {
+                        ShowMessage(ToastType.Danger, "Access is denied due to invalid credentials. !", "Error: Unauthorized");
+                        return;
+
+                    }
+                    else if (assetId == "NotFound")
+                    {
+                        ShowMessage(ToastType.Danger, "The requested resource could not be found.!", "Error: Not Found");
+                        return;
+                    }
+
+                    var filePath = Path.Combine("wwwroot", "uploadVideo", $"{assetId}{extension}");
+
+                    // Ensure the directory exists
+
+                    var directory = Path.GetDirectoryName(filePath);
+                    if (!Directory.Exists(directory))
+                    {
+                        Directory.CreateDirectory(directory);
+                    }
+
+                    // Save the file to wwwroot/uploadVideo
+                    await using (var fileStream = new FileStream(filePath, FileMode.Create))
+                    {
+                        await file.OpenReadStream(maxAllowedSize).CopyToAsync(fileStream);
+                    }
+
+                    // Upload to S3
+                    await using (var memoryStream = new MemoryStream())
+                    {
+                        await using (var fileStream = new FileStream(filePath, FileMode.Open))
+                        {
+                            await fileStream.CopyToAsync(memoryStream);
+                        }
+                        memoryStream.Position = 0; // Reset stream position before upload
+                        try
+                        {
+                            _s3Url = await AvatarVideoService.RequestVideoUploads(assetId, _token);
+                            uploadvideos3 = await AvatarVideoService.UploadVideoToS3(_s3Url, filePath);
+                            await AvatarVideoService.StartFittingProcess(assetId, _token);
+                            if (uploadvideos3)
+                            {
+                                isLoaderActive = false;
+                                isButtonShow = true;
+                                ShowMessage(ToastType.Success, "Avatar Created succesfully !", "Avatar created");
+                            }
+                            else
+                            {
+                                ShowMessage(ToastType.Danger, "File upload to s3 bucket for avatar creation Faield !", "File Process For Avatar");
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            isLoaderActive = false;
+                            ShowMessage(ToastType.Danger, ex.Message.ToString(), "Faield");
+                        }
+                    }
+                }
             }
         }
+       
     }
 
     private double DoubleFormatter(double value)
     {
-        var result =  Math.Round(value, 2);
+        var result = Math.Round(value, 2);
         return result;
     }
 
     public async Task<AvatarMeasurements> AvatarMeasurements(string avatarId, string token)
     {
-        responseAvatar = await AvatarService.RetrieveAvatarMeasurements(avatarId, token);
+        responseAvatar = await CommonAvtarService.RetrieveAvatarMeasurements(avatarId, token);
         var avatarStatus = responseAvatar.data.attributes.state;
         return responseAvatar;
     }
@@ -169,7 +269,7 @@
     {
         isLoaderActive = true;
         showMeasurementData = false;
-        responseAvatar = await AvatarMeasurements(_avatarId, _token);
+        responseAvatar = await AvatarMeasurements(assetId, _token);
         if (responseAvatar.data.attributes.state == "READY")
         {
             ShowMessage(ToastType.Success, "Measurements !", "Avatar measrements");
@@ -191,11 +291,11 @@
     private async Task Download()
     {
         isLoaderActive = true;
-        responseAvatar = await AvatarMeasurements(_avatarId, _token);
+        responseAvatar = await AvatarMeasurements(assetId, _token);
         if (responseAvatar.data.attributes.state == "READY")
         {
-            responseAvatarExport = await AvatarService.ExportAvatar(_avatarId, _token);
-            if(responseAvatarExport.data.attributes.state == "READY")
+            responseAvatarExport = await AvatarService.ExportAvatar(assetId, _token);
+            if (responseAvatarExport.data.attributes.state == "READY")
             {
                 var s3BucketFileLink = responseAvatarExport.data.attributes.url.path.ToString();
                 await JSRuntime.InvokeVoidAsync("threeExample", "threeCanvas", s3BucketFileLink);
