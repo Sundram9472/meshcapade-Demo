@@ -9,7 +9,7 @@
 <Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
 <h3>Upload Avatar Image</h3>
 
-<InputFile accept=".jpg,.jpeg,.png,.gif,.mp4" OnChange="@(async e => await HandleFileSelected(e))" />
+<InputFile accept=".jpg,.jpeg,.png,.gif,.mp4,.avi,.mov,.mkv,.obj" OnChange="@(async e => await HandleFileSelected(e))" />
 
 
 @if (isButtonShow)
