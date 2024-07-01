@@ -8981,6 +8981,7 @@
       "Microsoft.AspNetCore.Components.WebAssembly >= 8.0.6",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 8.0.6",
       "Microsoft.AspNetCore.Proxy >= 0.2.0",
+      "Microsoft.JSInterop >= 8.0.6",
       "Microsoft.NET.ILLink.Tasks >= 8.0.6",
       "Microsoft.NET.Sdk.WebAssembly.Pack >= 8.0.6",
       "Newtonsoft.Json >= 13.0.3"
@@ -8992,11 +8993,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\mshdemo3.csproj",
+      "projectUniqueName": "F:\\mshdemo3\\mshdemo3\\mshdemo3.csproj",
       "projectName": "mshdemo3",
-      "projectPath": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\mshdemo3.csproj",
+      "projectPath": "F:\\mshdemo3\\mshdemo3\\mshdemo3.csproj",
       "packagesPath": "C:\\Users\\Dell\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\obj\\",
+      "outputPath": "F:\\mshdemo3\\mshdemo3\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Dell\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -9047,6 +9048,10 @@
           "Microsoft.AspNetCore.Proxy": {
             "target": "Package",
             "version": "[0.2.0, )"
+          },
+          "Microsoft.JSInterop": {
+            "target": "Package",
+            "version": "[8.0.6, )"
           },
           "Microsoft.NET.ILLink.Tasks": {
             "suppressParent": "All",

@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\mshdemo3.props" />
+</Project>

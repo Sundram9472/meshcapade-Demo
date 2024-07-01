@@ -1,80 +1,104 @@
 {
   "Files": [
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
+      "Id": "F:\\mshdemo3\\mshdemo3\\bin\\Debug\\net8.0\\wwwroot\\_framework\\blazor.webassembly.js",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\compressed\\uxzyx4h0ni.gz",
+      "Id": "F:\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\compressed\\uxzyx4h0ni.gz",
       "PackagePath": "staticwebassets\\_framework\\blazor.webassembly.js.gz"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\scopedcss\\bundle\\mshdemo3.styles.css",
+      "Id": "F:\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\scopedcss\\bundle\\mshdemo3.styles.css",
       "PackagePath": "staticwebassets\\mshdemo3.styles.css"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\service-worker-assets.js",
+      "Id": "F:\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\service-worker-assets.js",
       "PackagePath": "staticwebassets\\service-worker-assets.js"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\service-worker\\service-worker.published.js",
+      "Id": "F:\\mshdemo3\\mshdemo3\\obj\\Debug\\net8.0\\service-worker\\service-worker.published.js",
       "PackagePath": "staticwebassets\\service-worker.js"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\css\\app.css",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\LoaderSupport.js",
+      "PackagePath": "staticwebassets\\LoaderSupport.js"
+    },
+    {
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\OBJLoader2.js",
+      "PackagePath": "staticwebassets\\OBJLoader2.js"
+    },
+    {
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\OrbitControls.js",
+      "PackagePath": "staticwebassets\\OrbitControls.js"
+    },
+    {
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\css\\app.css",
       "PackagePath": "staticwebassets\\css\\app.css"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
       "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\down-load.svg",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\down-load.svg",
       "PackagePath": "staticwebassets\\down-load.svg"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\exclamation-circle.svg",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\exclamation-circle.svg",
       "PackagePath": "staticwebassets\\exclamation-circle.svg"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\eye.svg",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\eye.svg",
       "PackagePath": "staticwebassets\\eye.svg"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\favicon.png",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\favicon.png",
       "PackagePath": "staticwebassets\\favicon.png"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\icon-192.png",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\icon-192.png",
       "PackagePath": "staticwebassets\\icon-192.png"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\icon-512.png",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\icon-512.png",
       "PackagePath": "staticwebassets\\icon-512.png"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\images.jpeg",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\images.jpeg",
       "PackagePath": "staticwebassets\\images.jpeg"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\index.html",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\manifest.webmanifest",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\manifest.webmanifest",
       "PackagePath": "staticwebassets\\manifest.webmanifest"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\rulers.svg",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\newdemo2.obj",
+      "PackagePath": "staticwebassets\\newdemo2.obj"
+    },
+    {
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\rulers.svg",
       "PackagePath": "staticwebassets\\rulers.svg"
     },
     {
-      "Id": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\wwwroot\\sample-data\\weather.json",
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\sample-data\\weather.json",
       "PackagePath": "staticwebassets\\sample-data\\weather.json"
+    },
+    {
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\three.min.js",
+      "PackagePath": "staticwebassets\\three.min.js"
+    },
+    {
+      "Id": "F:\\mshdemo3\\mshdemo3\\wwwroot\\threeInterop.js",
+      "PackagePath": "staticwebassets\\threeInterop.js"
     },
     {
       "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.mshdemo3.props",

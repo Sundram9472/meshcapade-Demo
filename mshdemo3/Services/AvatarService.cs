@@ -9,6 +9,7 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Web;
 using static System.Net.WebRequestMethods;
 
 namespace mshdemo3.Services
@@ -89,6 +90,46 @@ namespace mshdemo3.Services
             var result = await response.Content.ReadFromJsonAsync<AvatarExport>();
             return result;
         }
+
+        public async Task<AvatarMeasurements> DownloadAvatar(string baseUrl, string assetId)
+        {
+
+            try
+            {
+                var response = await _httpClient.GetAsync(baseUrl);
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsStringAsync();
+
+                // Process the content as needed
+                Console.WriteLine(content);
+            }
+            catch (HttpRequestException e)
+            {
+                // Handle error
+                Console.WriteLine($"Request error: {e.Message}");
+            }
+            AvatarMeasurements hh = new AvatarMeasurements();
+            return hh;
+        }
+
+        private string CreateUrlWithQueryParams(string baseUrl, Dictionary<string, string> queryParams)
+        {
+            var uriBuilder = new UriBuilder(baseUrl);
+            var query = new StringBuilder();
+
+            foreach (var param in queryParams)
+            {
+                if (query.Length > 0)
+                {
+                    query.Append("&");
+                }
+                query.Append($"{param.Key}={param.Value}");
+            }
+
+            uriBuilder.Query = query.ToString();
+            return uriBuilder.ToString();
+        }
+
 
     }
 

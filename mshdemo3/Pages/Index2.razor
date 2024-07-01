@@ -2,6 +2,7 @@
 @inject AvatarService AvatarService
 @inject HttpClient Http
 @inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
 @using Microsoft.AspNetCore.Components.Forms
 
 <Toasts class="p-3" Messages="messages" AutoHide="true" Delay="6000" Placement="ToastsPlacement.TopRight" />
@@ -83,6 +84,7 @@
         </div>
     </div>
 }
+<canvas id="threeCanvas" style="width: 100%; height: 100%;"></canvas>
 
 @code {
     private string? BodyShapevalue { get; set; }
@@ -93,7 +95,7 @@
     public double chest { get; set; }
     public double Weight { get; set; }
     public double Height { get; set; }
-    private string _token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuSnVpYzVwbXk1T1hGSjVmY1RIQTdUNVktRHZVbVVOR2xxVHBqS0hDVnU4In0.eyJleHAiOjE3MTk2MTEyNjcsImlhdCI6MTcxOTU3NTI2OCwiYXV0aF90aW1lIjoxNzE5NTc1MjY3LCJqdGkiOiI3MDc0YzgxOS02ZTUzLTRmZmItOTUxMS1lNTJkYTMyYWRhZjkiLCJpc3MiOiJodHRwczovL2F1dGgubWVzaGNhcGFkZS5jb20vcmVhbG1zL21lc2hjYXBhZGUtbWUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMWY4MmE2ODAtZGFhMi00NzJhLTkxZDctOWE2NzdlY2NhZTA0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWVzaGNhcGFkZS1tZSIsIm5vbmNlIjoiZTZlNzBjZTYtMjQ3Zi00YjMyLWI0MGItZGJiODBlYWJhMTJlIiwic2Vzc2lvbl9zdGF0ZSI6ImRmZGZhZjgwLTI4N2UtNDkxMi1iMWVjLTE4MzFlZDcxM2QzNSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9tZXNoY2FwYWRlLmNvbSIsImh0dHBzOi8vbWUubWVzaGNhcGFkZS5jb20iLCJodHRwczovL21lc2hjYXBhZGUubWUiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1nY21jIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiZGZkZmFmODAtMjg3ZS00OTEyLWIxZWMtMTgzMWVkNzEzZDM1IiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoaXRvbWl0ZXN0ZGVtb0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiVGVzdCIsImZhbWlseV9uYW1lIjoiVXNlciIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLVm84dlJicnpaTkNZTmlWT3Q5Yk9TYXFvREZPMFRCcG53UWtGZzh3WHRIVzJCZmc9czk2LWMiLCJlbWFpbCI6ImhpdG9taXRlc3RkZW1vQGdtYWlsLmNvbSJ9.N2zXze7MVAkX1PPdszZ7H9cU1dXxb7VcvUA8dRHUwNTLBotZlyIQZKXVZ4k-jz7rO8zjx2xAtf-wIs3yYtpdqoxbw1yF3_4aRE4NLjqZIy6VFq0_I0IlQRLCZYC39jEH8M_-trxiuRFzGrAYJZMMOAR-anmZypMGcbZqsH6NRiRdUBTsPj-yiISjFKNhuc6qrH57ykdSKrYKcxja4i-kptr__zZA9uQ1FuXFErpvcC9-FItSAI8Bb6GJKRT4Z7jHGhpbNZWTS7h-kvuACMln8n37toT6k-TeYD0AebpWcAbQDBPwg3q_n8Rn8qTqFooBESxnVrdatVZ_48lqLdZoHw";
+    private string _token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuSnVpYzVwbXk1T1hGSjVmY1RIQTdUNVktRHZVbVVOR2xxVHBqS0hDVnU4In0.eyJleHAiOjE3MTk4NDUyOTYsImlhdCI6MTcxOTgwOTI5NywiYXV0aF90aW1lIjoxNzE5ODA5Mjk2LCJqdGkiOiI0ZDUyMDRjNi1hZjgyLTQ1NTYtYWM5Ny0wZjM3MzBkMDgxNzMiLCJpc3MiOiJodHRwczovL2F1dGgubWVzaGNhcGFkZS5jb20vcmVhbG1zL21lc2hjYXBhZGUtbWUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMWY4MmE2ODAtZGFhMi00NzJhLTkxZDctOWE2NzdlY2NhZTA0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWVzaGNhcGFkZS1tZSIsIm5vbmNlIjoiODFiNjJkYzctMjIxZi00ZjM1LTljNDItMDcyZTk0NzFkZDhjIiwic2Vzc2lvbl9zdGF0ZSI6ImZjZmVkMTc3LTY0ODMtNGRiYi1hZTZlLTllZjJiZGE1MmM0ZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9tZXNoY2FwYWRlLmNvbSIsImh0dHBzOi8vbWUubWVzaGNhcGFkZS5jb20iLCJodHRwczovL21lc2hjYXBhZGUubWUiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1nY21jIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiZmNmZWQxNzctNjQ4My00ZGJiLWFlNmUtOWVmMmJkYTUyYzRlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoaXRvbWl0ZXN0ZGVtb0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiVGVzdCIsImZhbWlseV9uYW1lIjoiVXNlciIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLVm84dlJicnpaTkNZTmlWT3Q5Yk9TYXFvREZPMFRCcG53UWtGZzh3WHRIVzJCZmc9czk2LWMiLCJlbWFpbCI6ImhpdG9taXRlc3RkZW1vQGdtYWlsLmNvbSJ9.WU3VUQTidtepflYSKywyKj49kA1cc-urIUdDKMQt6nAKiSaticso8ztTWgKxyj3SSXEB9g-_choYC4UHo-GBcHmw3Ea61Z0WI9CB4L5J9PNNYWEg6TqXoqBLYlUmDYBiN_8FDpNU8PN30E2Zoj7FRAutzkyHgdb2srXM2bNNDPYG_VgMRW9DdWlKok7ZV2s8HlJ8zXmWEVM8L3C-qGiw0ukCEbLlaYDMLc5aCO6D8GvnArf0yHSEsC8hNC3QUWz1PwCztqEkVGaM3HKT4J6TzFepYHa1BhfKLiRO37MRJTnbCBGn2aLkW6UREsa2QPbD2FJI8QwJHZeM6V4b1jCA1Q ";
     private string? _avatarId;
     private string? _s3Url;
     private bool uploadimages3;
@@ -195,15 +197,22 @@
             responseAvatarExport = await AvatarService.ExportAvatar(_avatarId, _token);
             if(responseAvatarExport.data.attributes.state == "READY")
             {
-                  
+                var s3BucketFileLink = responseAvatarExport.data.attributes.url.path.ToString();
+                await JSRuntime.InvokeVoidAsync("threeExample", "threeCanvas", s3BucketFileLink);
+                Navigation.NavigateTo(responseAvatarExport.data.attributes.url.path, true);
             }
-            var linksurls = responseAvatarExport.data.links.self;
+            else
+            {
+                isLoaderActive = false;
+                ShowMessage(ToastType.Info, "Avatar is not in ready state. Please wait sometime for download.!", "Status");
+            }
+
             isLoaderActive = false;
         }
         else
         {
             isLoaderActive = false;
-            ShowMessage(ToastType.Info, "Avatar is not in ready state. Please wait for sometime for download.!", "Status");
+            ShowMessage(ToastType.Info, "Avatar is not in ready state. Please wait sometime for download.!", "Status");
         }
     }
 }

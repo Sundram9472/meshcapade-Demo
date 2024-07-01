@@ -1,0 +1,45 @@
+﻿@page "/AvatarShow"
+@inject AvatarService AvatarService
+@inject HttpClient Http
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+@using Microsoft.AspNetCore.Components.Forms
+
+
+
+@code {
+
+    public AvatarMeasurements? responseAvatar;
+    public AvatarExport? responseAvatarExport;
+    private string _token = "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJuSnVpYzVwbXk1T1hGSjVmY1RIQTdUNVktRHZVbVVOR2xxVHBqS0hDVnU4In0.eyJleHAiOjE3MTk4NDUyOTYsImlhdCI6MTcxOTgwOTI5NywiYXV0aF90aW1lIjoxNzE5ODA5Mjk2LCJqdGkiOiI0ZDUyMDRjNi1hZjgyLTQ1NTYtYWM5Ny0wZjM3MzBkMDgxNzMiLCJpc3MiOiJodHRwczovL2F1dGgubWVzaGNhcGFkZS5jb20vcmVhbG1zL21lc2hjYXBhZGUtbWUiLCJhdWQiOiJhY2NvdW50Iiwic3ViIjoiMWY4MmE2ODAtZGFhMi00NzJhLTkxZDctOWE2NzdlY2NhZTA0IiwidHlwIjoiQmVhcmVyIiwiYXpwIjoibWVzaGNhcGFkZS1tZSIsIm5vbmNlIjoiODFiNjJkYzctMjIxZi00ZjM1LTljNDItMDcyZTk0NzFkZDhjIiwic2Vzc2lvbl9zdGF0ZSI6ImZjZmVkMTc3LTY0ODMtNGRiYi1hZTZlLTllZjJiZGE1MmM0ZSIsImFjciI6IjEiLCJhbGxvd2VkLW9yaWdpbnMiOlsiaHR0cHM6Ly9tZXNoY2FwYWRlLmNvbSIsImh0dHBzOi8vbWUubWVzaGNhcGFkZS5jb20iLCJodHRwczovL21lc2hjYXBhZGUubWUiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9mZmxpbmVfYWNjZXNzIiwiZGVmYXVsdC1yb2xlcy1nY21jIiwidW1hX2F1dGhvcml6YXRpb24iXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiZmNmZWQxNzctNjQ4My00ZGJiLWFlNmUtOWVmMmJkYTUyYzRlIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsIm5hbWUiOiJUZXN0IFVzZXIiLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJoaXRvbWl0ZXN0ZGVtb0BnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiVGVzdCIsImZhbWlseV9uYW1lIjoiVXNlciIsInBpY3R1cmUiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NLVm84dlJicnpaTkNZTmlWT3Q5Yk9TYXFvREZPMFRCcG53UWtGZzh3WHRIVzJCZmc9czk2LWMiLCJlbWFpbCI6ImhpdG9taXRlc3RkZW1vQGdtYWlsLmNvbSJ9.WU3VUQTidtepflYSKywyKj49kA1cc-urIUdDKMQt6nAKiSaticso8ztTWgKxyj3SSXEB9g-_choYC4UHo-GBcHmw3Ea61Z0WI9CB4L5J9PNNYWEg6TqXoqBLYlUmDYBiN_8FDpNU8PN30E2Zoj7FRAutzkyHgdb2srXM2bNNDPYG_VgMRW9DdWlKok7ZV2s8HlJ8zXmWEVM8L3C-qGiw0ukCEbLlaYDMLc5aCO6D8GvnArf0yHSEsC8hNC3QUWz1PwCztqEkVGaM3HKT4J6TzFepYHa1BhfKLiRO37MRJTnbCBGn2aLkW6UREsa2QPbD2FJI8QwJHZeM6V4b1jCA1Q ";
+
+    protected override async Task OnInitializedAsync()
+    {
+        responseAvatar = await AvatarMeasurements("e59b45fe-a1df-4314-a22c-00f0ef2b5e17", _token);
+        if (responseAvatar.data.attributes.state == "READY")
+        {
+            responseAvatarExport = await AvatarService.ExportAvatar("e59b45fe-a1df-4314-a22c-00f0ef2b5e17", _token);
+            if (responseAvatarExport.data.attributes.state == "READY")
+            {
+                
+            }
+            else
+            {
+             
+            }
+
+            
+        }
+        else
+        {
+            
+        }
+    }
+
+    public async Task<AvatarMeasurements> AvatarMeasurements(string avatarId, string token)
+    {
+        responseAvatar = await AvatarService.RetrieveAvatarMeasurements(avatarId, token);
+        var avatarStatus = responseAvatar.data.attributes.state;
+        return responseAvatar;
+    }
+}

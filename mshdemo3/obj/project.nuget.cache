@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "OI5m+Jn06Ms0ziMpdp6MnkBA2XbF3pPFufXvPhALOo/+jgIef+FcB470D40MzhMdt6wl79eLWOVKTSzJV1WPhw==",
+  "dgSpecHash": "OP6lf4EU8z9oGfN11voVtEwQMSHdfHLlTf1Cxd1G1nJHdPZTj/BB3D/h4PfzcI/S+it2jZknF+bNArvn4H7oAQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Dell\\source\\repos\\mshdemo3\\mshdemo3\\mshdemo3.csproj",
+  "projectFilePath": "F:\\mshdemo3\\mshdemo3\\mshdemo3.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Dell\\.nuget\\packages\\blazor.bootstrap\\2.2.0\\blazor.bootstrap.2.2.0.nupkg.sha512",
     "C:\\Users\\Dell\\.nuget\\packages\\microsoft.aspnetcore.authorization\\8.0.6\\microsoft.aspnetcore.authorization.8.0.6.nupkg.sha512",
