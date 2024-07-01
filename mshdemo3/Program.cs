@@ -9,6 +9,4 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://api.meshcapade.com/api/v1/") });
 builder.Services.AddBlazorBootstrap();
 builder.Services.AddScoped<AvatarService>();
-builder.Services.AddScoped<AvatarVideoService>();
-builder.Services.AddScoped<CommonAvtarService>();
 await builder.Build().RunAsync();
